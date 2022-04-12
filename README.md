@@ -2,6 +2,9 @@
 Registro, edição e visualização de tarefas com prazo de realização
 Utiliza banco de dados postgresql
 --------------------------------
+
+Query das tabelas utilizadas 
+
 CREATE TABLE users (
  usuario varchar(256),
  email varchar(256),
