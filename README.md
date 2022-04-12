@@ -1,2 +1,2 @@
 # tasks-manager
-Registro de tarefas
+Registro, edição e visualização de tarefas com prazo de realização
