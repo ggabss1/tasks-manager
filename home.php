@@ -64,8 +64,9 @@ if(isset($_GET['Excluir_Perfil'])){
 if(isset($_GET['Sim'])){
     //pega o nome do usuário na sessão
     $usr = $_SESSION['usuario'];
-    //deleta o registro no banco
+    //deleta os registros no banco
     $query = pg_query($connect,"DELETE FROM USERS WHERE USUARIO = '$usr'");
+    $query = pg_query($connect,"DELETE FROM TASKS WHERE USUARIO = '$usr'");
     //encerra a sessão
     session_destroy();
     //redireciona para a página de login
