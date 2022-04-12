@@ -14,11 +14,29 @@
 require_once 'conexao.php';
 //inicia a sessão
 session_start();
+//se não tem get
+if(empty($_GET['id'])){
+//mensagem de erro
+echo "<script>
+alert('Tarefa não encontrada!'); 
+window.location.href='home.php'
+</script>";
+}else{
 //pega id
 $id = $_GET['id'];
+}
 //seleciona task com esse id no banco
-$query = pg_query($connect,"SELECT * FROM TASKS WHERE ID = $id");
+$usuario = $_SESSION['usuario'];
+$query = pg_query($connect,"SELECT * FROM TASKS WHERE ID = $id AND USUARIO = '$usuario'");
 $resultado = pg_fetch_array($query);
+//se a task não for do usuário vai retornar vazio
+if(empty($resultado)){
+  //mensagem de erro
+echo "<script>
+alert('Tarefa não encontrada!'); 
+window.location.href='home.php'
+</script>";  
+}
 $titulo = $resultado['titulo'];
 $status = $resultado['status'];
 $descricao = $resultado['descricao'];
@@ -27,6 +45,7 @@ $prazo = $resultado['prazo'];
 <!-- mostrar inputs de titulo, status -vai poder ser pendente ou concluido-, descrição e prazo para editar informações dessa task -->
 <!-- inputs já vem preenchidos do banco -->
 <!-- botão para salvar -->
+<!-- botão excluir -->
 <!-- botão para voltar -->
 <form action="#" method="post">
     <!-- titulo -->
@@ -50,6 +69,7 @@ $prazo = $resultado['prazo'];
     <!-- prazo -->
     <span>Prazo</span><br>
     <input type="date" name="prazo" value="<?=$prazo;?>"required><br>
+<input type="submit" name="Excluir" value="Excluir"><br>
 <input type="submit" name="Salvar" value="Salvar">
 </form>
 <a href='home.php'><button>Voltar</button></a>
@@ -72,5 +92,15 @@ echo "<script>
     alert('Tarefa editada!'); 
     window.location.href='home.php'
     </script>";
+}
+//se o usuário pressionou excluir
+if(isset($_POST['Excluir'])){
+    //deleta task
+    $query = pg_query($connect, "DELETE FROM TASKS WHERE ID = $id");
+    //mensagem de sucesso e redireciona para a home
+echo "<script>
+alert('Tarefa deletada!'); 
+window.location.href='home.php'
+</script>";
 }
 ?>
