@@ -28,8 +28,11 @@ if(!empty($_POST['user'])){
     //criptografa a senha 
     $senha = md5($senha);
     //verifica no banco de dados se a senha está correta para esse usuário
-    $query = pg_query($connect,"SELECT * FROM USERS WHERE USUARIO = '$usuario' AND SENHA = '$senha'");
-    $resultado = pg_fetch_array($query);
+    $resultado = $conn->prepare("SELECT * FROM USERS WHERE USUARIO = ? AND SENHA = ?");
+    $resultado->bindParam(1,$usuario);
+    $resultado->bindParam(2,$senha);
+    $resultado->execute();
+    $resultado = $resultado->fetchAll();
     //se sim, define o parâmetro 'logado', na sessão
     if(!empty($resultado)){
     $_SESSION['logado'] = 'SIM';    
@@ -65,8 +68,12 @@ if(isset($_GET['Sim'])){
     //pega o nome do usuário na sessão
     $usr = $_SESSION['usuario'];
     //deleta os registros no banco
-    $query = pg_query($connect,"DELETE FROM USERS WHERE USUARIO = '$usr'");
-    $query = pg_query($connect,"DELETE FROM TASKS WHERE USUARIO = '$usr'");
+    $query = $conn->prepare("DELETE FROM USERS WHERE USUARIO = ?");
+    $query->bindParam(1,$usr);
+    $query->execute();
+    $query = $conn->prepare("DELETE FROM TASKS WHERE USUARIO = ?");
+    $query->bindParam(1,$usr);
+    $query->execute();
     //encerra a sessão
     session_destroy();
     //redireciona para a página de login
@@ -85,11 +92,17 @@ if(isset($_GET['Sim'])){
 <a href='criar.php'><button>Criar tarefa</button></a>
 <?php
 //busca no banco tasks pendentes com prazo de hoje
-    $queryhj = pg_query($connect,"SELECT * FROM TASKS WHERE USUARIO = '$usuario' AND STATUS = 'PENDENTE' AND PRAZO = '$hoje' ORDER BY ID ASC");
-    $resultadohj = pg_fetch_all($queryhj);
+    $queryhj = $conn->prepare("SELECT * FROM TASKS WHERE USUARIO = ? AND STATUS = 'PENDENTE' AND PRAZO = ? ORDER BY ID ASC");
+    $queryhj->bindParam(1,$usuario);
+    $queryhj->bindParam(2,$hoje);
+    $queryhj->execute();
+    $resultadohj = $queryhj->fetchAll();
 //busca no banco tasks pendentes com prazo de hoje
-    $query = pg_query($connect,"SELECT * FROM TASKS WHERE USUARIO = '$usuario' AND STATUS = 'PENDENTE' AND PRAZO != '$hoje' ORDER BY ID ASC");
-    $resultado = pg_fetch_all($query);
+    $query = $conn->prepare("SELECT * FROM TASKS WHERE USUARIO = ? AND STATUS = 'PENDENTE' AND PRAZO != ? ORDER BY ID ASC");
+    $query->bindParam(1,$usuario);
+    $query->bindParam(2,$hoje);
+    $query->execute();
+    $resultado = $query->fetchAll();
 ?>
 <!-- div 1 aqui serão mostradas apenas as tasks pendentes, se não existir mostra mensagem -abrange as outras duas divs- -->
 <?php

@@ -13,8 +13,15 @@
     margin-top:12px;
 }
 .form-span{
-    color:white;
+    color:white !important;
 }
 input{
     max-width: 80%;
 }
+/* mobile */
+@media(max-width: 768px){
+    .form-block{
+        width: 60%;
+    }
+    }
+    

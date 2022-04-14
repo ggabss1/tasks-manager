@@ -35,10 +35,12 @@ if(empty($_SESSION['logado'])){
 <a href='home.php'><button>Voltar</button></a>
 <?php
 //se o formulário fou preenchido
+
 if(!empty($_POST['titulo'])){
     //veririca qual o maior id das tasks
-    $query = pg_query($connect,"SELECT max((id)) FROM tasks");
-    $resultado = pg_fetch_array($query);
+    $resultado = $conn->prepare("SELECT max((id)) FROM tasks");
+    $resultado->execute();
+    $resultado = $resultado->fetch();
     //se não existe nenhuma task:
     if($resultado[0]==NULL){
         //o id será 1
@@ -60,8 +62,16 @@ if(!empty($_POST['titulo'])){
     //prazo
     $prazo = $_POST['prazo'];
     //insere a task no banco de dados
-    $query = pg_query($connect,"INSERT INTO TASKS(id, usuario, titulo, status, descricao, data_registro, prazo) 
-    VALUES($maxid, '$usuario', '$titulo', '$status', '$descricao', '$hoje', '$prazo')");
+    $query = $conn->prepare("INSERT INTO TASKS(id, usuario, titulo, status, descricao, data_registro, prazo) 
+    VALUES(?,?,?,?,?,?,?)");
+    $query->bindParam(1,$maxid);
+    $query->bindParam(2,$usuario);
+    $query->bindParam(3,$titulo);
+    $query->bindParam(4,$status);
+    $query->bindParam(5,$descricao);
+    $query->bindParam(6,$hoje);
+    $query->bindParam(7,$prazo);
+    $query->execute();
     //mensagem de sucesso e redireciona para a home
     echo "<script>
         alert('Tarefa registrada!'); 

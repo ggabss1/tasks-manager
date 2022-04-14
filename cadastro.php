@@ -60,8 +60,10 @@
      $sn = $_POST['senha'];
      $cf = $_POST['confirmacao'];
      //busca no banco se já existe um usuário com esse nome
-    $query = pg_query($connect,"SELECT * FROM USERS WHERE USUARIO = '$us'");
-    $resultado = pg_fetch_array($query);
+     $resultado = $conn->prepare("SELECT * FROM USERS WHERE USUARIO = ?");
+     $resultado->bindParam(1,$us);
+     $resultado->execute();
+     $resultado = $resultado->fetchAll();
     //se sim, exibe uma mensagem na tela e recarrega a página
     if(!empty($resultado)){
         echo "<script>
@@ -70,8 +72,10 @@
         </script>";
     }
     //pega no banco se há existe um usário com essa senha
-    $query = pg_query($connect,"SELECT * FROM USERS WHERE EMAIL = '$em'");
-    $resultado = pg_fetch_array($query);
+    $resultado = $conn->prepare("SELECT * FROM USERS WHERE EMAIL = ?");
+    $resultado->bindParam(1,$em);
+    $resultado->execute();
+    $resultado = $resultado->fetchAll();
     // se sim, exibe uma mensagem na tela e recarega a página
     if(!empty($resultado)){
         echo "<script>
@@ -94,7 +98,11 @@
         //criptografa a senha
         $sn = md5($sn);
         //insere dados de cadastro no banco
-        $query = pg_query($connect,"INSERT INTO USERS(USUARIO, EMAIL, SENHA) VALUES('$us', '$em', '$sn')");
+        $query = $conn->prepare("INSERT INTO USERS(USUARIO, EMAIL, SENHA) VALUES(?,?,?)");
+        $query->bindParam(1,$us);
+        $query->bindParam(2,$em);
+        $query->bindParam(3,$sn);
+        $query->execute();
         //mostra mensagem de sucesso e redireciona para o login, que já ira com o usuário preenchido
         echo "<script>
         alert('Cadastro realizado!'); 

@@ -27,8 +27,11 @@ $id = $_GET['id'];
 }
 //seleciona task com esse id no banco
 $usuario = $_SESSION['usuario'];
-$query = pg_query($connect,"SELECT * FROM TASKS WHERE ID = $id AND USUARIO = '$usuario'");
-$resultado = pg_fetch_array($query);
+$resultado = $conn->prepare("SELECT * FROM TASKS WHERE ID = ? AND USUARIO = ?");
+$resultado->bindParam(1,$id);
+$resultado->bindParam(2,$usuario);
+$resultado->execute();
+$resultado = $resultado->fetch();
 //se a task não for do usuário vai retornar vazio
 if(empty($resultado)){
   //mensagem de erro
@@ -86,7 +89,13 @@ $descricao = $_POST['descricao'];
 //prazo
 $prazo = $_POST['prazo'];
 //update da task no banco de dados
-$query = pg_query($connect,"UPDATE TASKS SET titulo = '$titulo', status = '$status', descricao = '$descricao', prazo = '$prazo' WHERE ID = $id");
+$query = $conn->prepare("UPDATE TASKS SET titulo = ? , status = ?, descricao = ?, prazo = ? WHERE ID = ?");
+$query->bindParam(1,$titulo);
+$query->bindParam(2,$status);
+$query->bindParam(3,$descricao);
+$query->bindParam(4,$prazo);
+$query->bindParam(5,$id);
+$query->execute();
 //mensagem de sucesso e redireciona para a home
 echo "<script>
     alert('Tarefa editada!'); 
@@ -96,7 +105,9 @@ echo "<script>
 //se o usuário pressionou excluir
 if(isset($_POST['Excluir'])){
     //deleta task
-    $query = pg_query($connect, "DELETE FROM TASKS WHERE ID = $id");
+    $query = $conn->prepare("DELETE FROM TASKS WHERE ID = ?");
+    $query->bindParam(1,$id);
+    $query->execute();
     //mensagem de sucesso e redireciona para a home
 echo "<script>
 alert('Tarefa deletada!'); 

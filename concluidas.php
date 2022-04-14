@@ -27,8 +27,10 @@ if(empty($_SESSION['logado'])){
 <body>
 <?php
 //busca no banco tasks concluídas
-    $query = pg_query($connect,"SELECT * FROM TASKS WHERE USUARIO = '$usuario' AND STATUS = 'CONCLUÍDA'");
-    $resultado = pg_fetch_all($query);
+    $resultado = $conn->prepare("SELECT * FROM TASKS WHERE USUARIO = ? AND STATUS = 'CONCLUÍDA'");
+    $resultado->bindParam(1,$usuario);
+    $resultado->execute();
+    $resultado = $resultado->fetchAll();
 //enquanto existirem resultados pendentes
 $r=0;
 while(!empty($resultado[$r])){
