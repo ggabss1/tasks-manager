@@ -85,10 +85,10 @@ if(isset($_GET['Sim'])){
 <a href='criar.php'><button>Criar tarefa</button></a>
 <?php
 //busca no banco tasks pendentes com prazo de hoje
-    $queryhj = pg_query($connect,"SELECT * FROM TASKS WHERE USUARIO = '$usuario' AND STATUS = 'PENDENTE' AND PRAZO = '$hoje'");
+    $queryhj = pg_query($connect,"SELECT * FROM TASKS WHERE USUARIO = '$usuario' AND STATUS = 'PENDENTE' AND PRAZO = '$hoje' ORDER BY ID ASC");
     $resultadohj = pg_fetch_all($queryhj);
 //busca no banco tasks pendentes com prazo de hoje
-    $query = pg_query($connect,"SELECT * FROM TASKS WHERE USUARIO = '$usuario' AND STATUS = 'PENDENTE' AND PRAZO != '$hoje'");
+    $query = pg_query($connect,"SELECT * FROM TASKS WHERE USUARIO = '$usuario' AND STATUS = 'PENDENTE' AND PRAZO != '$hoje' ORDER BY ID ASC");
     $resultado = pg_fetch_all($query);
 ?>
 <!-- div 1 aqui serão mostradas apenas as tasks pendentes, se não existir mostra mensagem -abrange as outras duas divs- -->
@@ -103,37 +103,34 @@ if(empty($resultadohj) AND empty($resultado)){
 <!-- div 2 aqui serão mostradas apenas as tasks pendentes com prazo hoje, se não existir mostra mensagem -->
 <?php
 //enquanto exisitirem registros com prazo = hoje
-$h = 0;
-while(!empty($resultadohj[$h])){
+foreach($resultadohj as $value){
 //titulo
-$titulo=$resultadohj[$h]['titulo'];
+$titulo=$value['titulo'];
 //id
-$id=$resultadohj[$h]['id'];
+$id=$value['id'];
 ?>
 <!-- só vai exibir título e um botão para acessar os detalhes -->
 <form method='get' action='editar.php'><input type='hidden' value='<?=$id;?>' name='id'><button type='submit'>Detalhes</button></form>
 <?php
-$h++;
 }
+
 ?>
 <!-- div 3 aqui serão mostradas as tasks pendentes com prazo de outros dias, se não existir mostra mensagem  -->
 <?php
 //enquanto existirem resultados pendentes
-$r=0;
-while(!empty($resultado[$r])){
+foreach($resultado as $value){
 //titulo
-$titulo=$resultado[$r]['titulo'];
+$titulo=$value['titulo'];
 //id
-$id=$resultado[$r]['id'];
+$id=$value['id'];
 //data
-$data=$resultado[$r]['prazo'];
+$data=$value['prazo'];
 //data convertida
 $conv = date('d/m/Y',strtotime($data));
 ?>
 <!-- só vai exibir título, data e botão para acessar detalhe -->
 <form method='get' action='editar.php'><input type='hidden' value='<?=$id;?>' name='id'><button type='submit'>Detalhes</button></form>
 <?php
-$r++;
 }
 }
 ?>

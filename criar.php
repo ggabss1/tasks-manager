@@ -5,6 +5,10 @@ require_once 'conexao.php';
 session_start();
 //define o 'fuso horário' brasileiro como padrão
 date_default_timezone_set('America/Sao_Paulo');
+//se o usuário tentar acessar a página sem estar logado é redirecionado para a página de login
+if(empty($_SESSION['logado'])){
+    echo "<script>window.location.replace('index.php')</script>";
+}
 ?>
 <!DOCTYPE html>
 <html lang="PT-BR">
