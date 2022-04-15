@@ -46,6 +46,13 @@
 <a href="index.php"><button>Voltar</button></a>
 </body>
 </html>
+
+
+
+
+
+
+
  <?php
  //se o usuário já tentou criar e obteve o erro de senha e confirmção, exclui da sessão os dados armazenados temporariamente
  if(!empty($_SESSION['tmp_us']) && !empty($_SESSION['tmp_em'])){

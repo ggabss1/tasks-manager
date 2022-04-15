@@ -33,6 +33,13 @@ if(empty($_SESSION['logado'])){
 <button type="submit">Salvar</button>
 </form>
 <a href='home.php'><button>Voltar</button></a>
+
+
+
+
+
+
+
 <?php
 //se o formulário fou preenchido
 

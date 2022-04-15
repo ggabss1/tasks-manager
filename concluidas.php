@@ -27,10 +27,10 @@ if(empty($_SESSION['logado'])){
 <body>
 <?php
 //busca no banco tasks concluídas
-    $resultado = $conn->prepare("SELECT * FROM TASKS WHERE USUARIO = ? AND STATUS = 'CONCLUÍDA'");
-    $resultado->bindParam(1,$usuario);
-    $resultado->execute();
-    $resultado = $resultado->fetchAll();
+$resultado = $conn->prepare("SELECT * FROM TASKS WHERE USUARIO = ? AND STATUS = 'CONCLUÍDA'");
+$resultado->bindParam(1,$usuario);
+$resultado->execute();
+$resultado = $resultado->fetchAll();
 //enquanto existirem resultados pendentes
 $r=0;
 while(!empty($resultado[$r])){
@@ -45,8 +45,14 @@ $conv = date('d/m/Y',strtotime($data));
 //link de acesso
 $link = 'editar.php?id='.$id;
 ?>
+
+
+
 <!-- só vai exibir título, data e botão para acessar detalhe -->
 <a href='<?=$link;?>'><button>Detalhes</button></a>
+
+
+
 <?php
 $r++;
 }

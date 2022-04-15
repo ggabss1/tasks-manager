@@ -38,7 +38,7 @@ require_once 'conexao.php';
         <div>
             <hr>
             <!-- link para acessar a página de cadastro -->
-            <span class='form-span'> Novo por aqui? <a style="color:white;" href='cadastro.php'>Cadastre-se</a></span>
+            <span style="font-family:-apple-system Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" class='form-span'> Novo por aqui? <a style="color:white;" href='cadastro.php'>Cadastre-se</a></span>
         </div>  
     </div>
 </body>

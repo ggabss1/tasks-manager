@@ -17,7 +17,7 @@ session_start();
 date_default_timezone_set('America/Sao_Paulo');
 //pega a data de hoje
 $hoje = date("Y-m-d");
-//se ele tiver acabo de logar
+//se ele tiver acabado de logar
 if(!empty($_POST['user'])){
     //armazena o usuário na variável
     $usuario = $_POST['user'];
@@ -128,6 +128,7 @@ $id=$value['id'];
 }
 
 ?>
+
 <!-- div 3 aqui serão mostradas as tasks pendentes com prazo de outros dias, se não existir mostra mensagem  -->
 <?php
 //enquanto existirem resultados pendentes
@@ -141,7 +142,7 @@ $data=$value['prazo'];
 //data convertida
 $conv = date('d/m/Y',strtotime($data));
 ?>
-<!-- só vai exibir título, data e botão para acessar detalhe -->
+<!-- só vai exibir título, data e botão para acessar detalhes -->
 <form method='get' action='editar.php'><input type='hidden' value='<?=$id;?>' name='id'><button type='submit'>Detalhes</button></form>
 <?php
 }
@@ -151,4 +152,3 @@ $conv = date('d/m/Y',strtotime($data));
 <a href='concluidas.php'><button>Tarefas concluídas</button></a>
 </body>
 </html>
-<?php

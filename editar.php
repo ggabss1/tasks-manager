@@ -77,6 +77,11 @@ $prazo = $resultado['prazo'];
 </form>
 <a href='home.php'><button>Voltar</button></a>
 </body>
+
+
+
+
+
 <?php
 //se o usuário salvou o formulário
 if(isset($_POST['Salvar'])){
