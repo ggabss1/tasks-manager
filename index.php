@@ -13,7 +13,7 @@ require_once 'conexao.php';
     <title>Login - Tasks Manager</title>
 </head>
 <body>
-    <!-- div do bloco inteiro -->
+    <!-- divo bloco inteiro -->
     <div class='form-block'>
         <!-- div do formulario -->
         <div class='form'>
